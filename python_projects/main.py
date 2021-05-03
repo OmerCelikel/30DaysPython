@@ -24,45 +24,47 @@ root = Tk()
 root.geometry('400x400')
 root.resizable(0,100)
 root.title('Taş,Kağıt, Makas')
-root.config(bg='gray24')
+root.config(bg='gray8')
 
 #Label oluşturacağız bunu kullanıcı değiştiremeyecek
 
-my_label = Label(root,text ="Taş , Kağıt , Makas" , font='arial 18 bold', bg='snow').pack()
-#my_label.pack(side="top")
-#can.place(relx=0.5, rely=0.5, anchor=CENTER)
+my_label = Label(root,text ="Taş , Kağıt , Makas" , font='arial 18 bold', bg='orange2').pack()
 
 #Kullanıcı Seçimi , Entry Widget ı input alacak
 user_take = StringVar()
-user_option = Label(root,text = "Birini seç : taş  kağıt  makas", font='arial 14 bold', bg='snow').place(x = 65 , y = 70)
-Entry(root,font = "arial 15", textvariable = user_take , bg = "antiquewhite2").place(x=85 , y = 130)
-
-#bilgisayar Seçimi
-resultComputer = StringVar()
-#burada 3 seçenek var bilgisayarın seçeceği random olarak bilgisayara seçtiriyoruz
-comp_pick = random.randint(1,3) #  1 2 3 Taş Kağıt Makas
-if comp_pick == 1:
-    comp_pick = 'taş'
-    resultComputer.set("taş")
-
-elif comp_pick == 2:
-    comp_pick = "kağıt"
-    resultComputer.set("kağıt")
-else:
-    comp_pick == "makas"
-    resultComputer.set("makas")
+user_option = Label(root,text = "Birini seç : taş  kağıt  makas", font='arial 14 bold', bg='orange2').place(x = 65 , y = 70)
+Entry(root,font = "arial 15", textvariable = user_take , bg = "orange2").place(x=85 , y = 130)
 
 
-#bilgisayarın seçimini görebilirsiniz
-#print(comp_pick)
+
+def computer_choice():
+    # burada 3 seçenek var bilgisayarın seçeceği random olarak bilgisayara seçtiriyoruz
+    comp_pick = random.randint(1, 3)  # 1 2 3 Taş Kağıt Makas
+    if comp_pick == 1:
+        comp_pick = 'taş'
+    elif comp_pick == 2:
+        comp_pick = "kağıt"
+    elif comp_pick == 3:
+        comp_pick = "makas"
+    return comp_pick
 
 
 #oyunu başlatalım
+
+#sonucu tutuyoruz
+#StringVar() = Holds a string; the default value is an empty string ""
 result = StringVar()
+computer_result= StringVar()
 
 def play():
-    #kullanıcının seçimini getirdik
     user_pick = user_take.get()
+
+    #bilgisayara seçim yaptırdık
+    comp_pick = computer_choice()
+
+    print("Bilgisayarın seçimi 2: ", comp_pick)
+    print("Benim seçimim : ", user_pick)
+
     if user_pick == comp_pick:
         result.set("Kazanan yok, berabere")
     elif (user_pick == 'taş' and comp_pick == "makas") or (user_pick == 'kağıt' and comp_pick == "taş") or \
@@ -71,24 +73,32 @@ def play():
     else:
         result.set("Kaybettiniz")
 
-    E1 = Entry(root, font='arial 10 bold', textvariable=resultComputer, bg='antiquewhite2', width=50).place(x=25, y=280)
+    computer_result.set(comp_pick)
 
 
+#reset butonu ile sıfırlıyoruz
 def reset():
     result.set("")
     user_take.set("")
+    computer_result.set("")
 
+def callback():
+    print("")
+
+#kapatıyoruz
 def Exit():
     root.destroy()
 
 
-Entry(root, font = 'arial 10 bold', textvariable = result, bg ='antiquewhite2',width = 50,).place(x=25, y = 250)
-Button(root, font = 'arial 13 bold', text = 'PLAY'  ,padx =5,bg ='seashell4' ,command = play).place(x=150,y=190)
-Button(root, font = 'arial 13 bold', text = 'RESET'  ,padx =5,bg ='seashell4' ,command = reset).place(x=70,y=310)
-Button(root, font = 'arial 13 bold', text = 'EXIT'  ,padx =5,bg ='seashell4' ,command = Exit).place(x=230,y=310)
 
-#bilgisayarın Seçimi
+Button(root, font = 'arial 13 bold', text = 'PLAY'  ,padx =5,bg ='blue2' ,command = play).place(x=150,y=190)
+Button(root, font = 'arial 13 bold', text = 'RESET'  ,padx =5,bg ='blue2' ,command = reset).place(x=70,y=310)
+Button(root, font = 'arial 13 bold', text = 'EXIT'  ,padx =5,bg ='blue2' ,command = Exit).place(x=230,y=310)
 
+sonuc = Label(root,text="Username").place(x=40, y=60)
+bilgisayar_sonucu = Label(root, text="Password").place(x=40,y=100)
 
+Entry(root, font = 'arial 10 bold', textvariable = result, bg ='orange2',width = 50).place(x=150, y = 250)
+Entry(root, font = 'arial 10 bold', textvariable = computer_result, bg ='orange2',width = 50).place(x=150, y = 280)
 
 root.mainloop()
